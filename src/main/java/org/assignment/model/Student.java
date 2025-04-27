@@ -1,5 +1,6 @@
 package org.assignment.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-//@Data
+@Data
 @Builder
 public class Student {
 
@@ -17,48 +18,11 @@ public class Student {
 
     private String name;
     private int age;
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private int standards;
     private String email;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private VaccinationRecord vaccinationRecord;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public VaccinationRecord getVaccinationRecord() {
-        return vaccinationRecord;
-    }
-
-    public void setVaccinationRecord(VaccinationRecord vaccinationRecord) {
-        this.vaccinationRecord = vaccinationRecord;
-    }
 }

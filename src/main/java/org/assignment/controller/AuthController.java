@@ -1,5 +1,7 @@
 package org.assignment.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import org.assignment.model.SignupResponse;
 import org.assignment.model.User;
 import org.assignment.repository.UserRepository;
 import org.assignment.utils.JwtUtil;
@@ -7,16 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class AuthController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(new SignupResponse(true, "User registered successfully"));
     }
 
     @PostMapping("/login")
@@ -51,7 +51,7 @@ public class AuthController {
                 String token = jwtUtil.generateToken(user);
                 return ResponseEntity.ok(Map.of(
                         "token", token,
-                        "role", user.getRole()
+                        "role", StringUtils.isEmpty(user.getRole()) ? "STUDENT" : user.getRole()
                 ));
             }
         }
