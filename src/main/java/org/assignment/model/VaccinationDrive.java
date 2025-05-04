@@ -23,7 +23,7 @@ public class VaccinationDrive {
 
     private int availableDoses;
 
-    private String applicableClasses; // e.g., "5-7"
+    private String applicableClasses;
 
     private boolean isExpired;
 
